@@ -1,6 +1,6 @@
-# EU4 Trade Graph
+# EU4 Trade Visualizer
 
-[![tests](https://github.com/weida-feng/eu4tradegraph/actions/workflows/tests.yml/badge.svg)](https://github.com/weida-feng/eu4tradegraph/actions/workflows/tests.yml)
+[![tests](https://github.com/weida-feng/EU4-Trade-Visualizer/actions/workflows/tests.yml/badge.svg)](https://github.com/weida-feng/EU4-Trade-Visualizer/actions/workflows/tests.yml)
 
 A Python / Streamlit tool that turns Europa Universalis IV save-game trade data into a directed network graph and downloadable tables.
 
@@ -39,8 +39,8 @@ Use Python **3.11 or newer**. The Python dependencies are pinned in `requirement
 2. Clone and install:
 
    ```bash
-   git clone https://github.com/weida-feng/eu4tradegraph.git
-   cd eu4tradegraph
+   git clone https://github.com/weida-feng/EU4-Trade-Visualizer.git
+   cd EU4-Trade-Visualizer
    python -m venv .venv
    source .venv/bin/activate
    # Windows PowerShell: .venv\Scripts\Activate.ps1

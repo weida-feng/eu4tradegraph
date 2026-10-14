@@ -1,4 +1,4 @@
-# EU4 贸易网络图
+# EU4 Trade Visualizer（EU4 贸易可视化工具）
 
 [English](README.md) · [设计说明](docs/architecture.md)
 
@@ -34,8 +34,8 @@
 2. 下载并安装依赖：
 
    ```bash
-   git clone https://github.com/weida-feng/eu4tradegraph.git
-   cd eu4tradegraph
+   git clone https://github.com/weida-feng/EU4-Trade-Visualizer.git
+   cd EU4-Trade-Visualizer
    python -m venv .venv
    source .venv/bin/activate
    # Windows PowerShell：.venv\Scripts\Activate.ps1

@@ -19,8 +19,8 @@ def load_snapshot(data: bytes):
 
 
 def main():
-    st.set_page_config(page_title="EU4 Trade Graph", page_icon="↗", layout="wide")
-    st.title("EU4 贸易网络图")
+    st.set_page_config(page_title="EU4 Trade Visualizer", page_icon="↗", layout="wide")
+    st.title("EU4 Trade Visualizer")
     st.caption("从欧陆风云 IV 存档查看贸易节点、流向与贸易值")
     st.info("目前仅验证过 EU4 1.34.4 的无 Mod、非压缩文本存档。其他版本可以尝试，但不保证兼容性或结果正确。")
     source = st.radio("数据来源", ("内置演示", "上传存档"), horizontal=True)
