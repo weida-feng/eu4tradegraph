@@ -1,246 +1,104 @@
-# -*- coding: utf-8 -*-
+"""Streamlit entry point: streamlit run app.py."""
 
+from pathlib import Path
+
+from graphviz.backend import CalledProcessError, ExecutableNotFound
 import streamlit as st
-import colorsys
-from io import BytesIO
-from PIL import Image, ImageDraw
-import os
-import re
-import graphviz
-import pydot
 
-class Trade_center:
-    def __init__(self, name, current, outgoing, local_value):
-            self.name = name.title()
-            self.current = current
-            self.outgoing = outgoing
-            self.local_value = local_value
+from eu4tradegraph import SaveError, parse_save
+from eu4tradegraph.export import node_rows, route_rows, to_csv
+from eu4tradegraph.render import GraphSettings, default_font, gradient, render_graph
 
-class Trade_transfer:
-    def __init__(self, start, final, value):
-        self.start = start
-        self.final = final
-        self.value = value
-
-def generate_plot(save_path, aspect_ratio, line_width_min, line_width_max, node_size_min, node_size_max, font_size_min, font_size_max, h1, s1, v1, h2, s2, v2):
-    trade_center_path = "trade_center.txt"
-
-    def cal_width(value, transfer_list):
-        min_width = line_width_min
-        max_width = line_width_max
-        value_list = list()
-        for transfer in transfer_list:
-            value_list.append(transfer.value)
-        return (value - min(value_list)) / (max(value_list) - min(value_list)) * (max_width - min_width) + min_width
-
-    def cal_node_color(value, node_list):
-        value_list = list()
-        for node in node_list:
-            value_list.append(node.local_value)
-        min_value = min(value_list)
-        max_value = max(value_list)
-        norm_value = (value - min_value) / (max_value - min_value)
-
-        return str(norm_value*(h2-h1)+h1)+" "+str(norm_value*(s2-s1)+s1)+" "+str(norm_value*(v2-v1)+v1)
-
-    def cal_node_size(value, node_list):
-        min_size = node_size_min
-        max_size = node_size_max
-
-        value_list = list()
-        for node in node_list:
-            value_list.append(node.current)
-
-        return (value - min(value_list)) / (max(value_list) - min(value_list)) * (max_size - min_size) + min_size
-
-    def cal_font_size(value, node_list):
-        min_size = font_size_min
-        max_size = font_size_max
-
-        value_list = list()
-        for node in node_list:
-            value_list.append(node.current)
-
-        return (value - min(value_list)) / (max(value_list) - min(value_list)) * (max_size - min_size) + min_size
-
-    Trade_center_info = {}
-
-    with open(trade_center_path, "rt", encoding="GB2312") as txt:
-        s = txt.readlines()
-
-    for sub_s in s:
-        Trade_center_info[sub_s.split()[0]] = [sub_s.split()[1], sub_s.split()[2]]
-
-    s = save_path
-
-    Trade_center_list = list()
-    Trade_transfer_list = list()
-
-    matches = re.compile(r'(node={[\s\S]*?\n\t})').findall(s)
-
-    for match in matches:
-        definitions = re.search(r'definitions="(.+?)"', match)
-        if definitions:
-            definitions = definitions.group(1)
-        else:
-            definitions = "null"
-
-        current = re.search(r'current=(\d+\.?\d*)', match)
-        if current:
-            current = eval(current.group(1))
-        else:
-            current = 0.0 
-
-        outgoing = re.search(r'outgoing=(\d+\.?\d*)', match)
-        if outgoing:
-            outgoing = eval(outgoing.group(1))
-        else:
-            outgoing = 0.0 
-
-        local_value = re.search(r'local_value=(\d+\.?\d*)', match)
-        if local_value:
-            local_value = eval(local_value.group(1))
-        else:
-            local_value = 0.0 
-
-        Trade_center_list.append(Trade_center(definitions, current, outgoing, local_value))
-
-        transfer_matches = re.compile(r'(incoming={[\s\S]*?\n\t\t})').findall(match)
-        
-        for transfer_match in transfer_matches:
-            value = re.search(r'value=(\d+\.?\d*)', transfer_match)
-            if value:
-                value = eval(value.group(1))
-            else:
-                value = 0.0 
-
-            start = re.search(r'from=(\d+\.?\d*)', transfer_match)
-            if start:
-                start = eval(start.group(1)) - 1
-            else:
-                start = 0
-            
-            final = len(Trade_center_list) - 1
-            
-            Trade_transfer_list.append(Trade_transfer(start, final, value))
+DEMO_PATH = Path(__file__).parent / "examples" / "trade_snapshot_1.34.4.eu4"
 
 
-    G = pydot.Dot(graph_type="digraph")
-    G.set_charset("utf-8")
-    G.set("fontname", "AR PL UMing CN")
-
-    G.set_ratio(str(aspect_ratio))
-
-    for i in range(len(Trade_center_list)):
-        if Trade_center_info[Trade_center_list[i].name][1] == "1":
-            new_node = pydot.Node(
-                Trade_center_info[Trade_center_list[i].name][0],shape = "box", fontname = "bold", style = "filled", fillcolor = cal_node_color(Trade_center_list[i].local_value, Trade_center_list), penwidth = "4", width = str(cal_node_size(Trade_center_list[i].current, Trade_center_list)), height = str(0.618*cal_node_size(Trade_center_list[i].current, Trade_center_list)), fontsize = str(cal_font_size(Trade_center_list[i].current, Trade_center_list))
-            )
-        else:
-            new_node = pydot.Node(
-                Trade_center_info[Trade_center_list[i].name][0], fontname = "bold", style = "filled", fillcolor = cal_node_color(Trade_center_list[i].local_value, Trade_center_list), penwidth = "4", width = str(cal_node_size(Trade_center_list[i].current, Trade_center_list)), height = str(0.618*cal_node_size(Trade_center_list[i].current, Trade_center_list)), fontsize = str(cal_font_size(Trade_center_list[i].current, Trade_center_list))
-            )
-        
-        G.add_node(new_node)
-    for edge in Trade_transfer_list:
-        if edge.value == 0:
-            new_edge = pydot.Edge(
-                Trade_center_info[Trade_center_list[edge.start].name][0], Trade_center_info[Trade_center_list[edge.final].name][0], style = "dashed", penwidth = str(cal_width(edge.value, Trade_transfer_list))
-            )
-        else:
-            new_edge = pydot.Edge(
-                Trade_center_info[Trade_center_list[edge.start].name][0], Trade_center_info[Trade_center_list[edge.final].name][0], penwidth = str(cal_width(edge.value, Trade_transfer_list))
-            )
-        G.add_edge(new_edge)
-
-    G_graph = graphviz.Source(G.to_string())
-
-    filename="graph"
-    format="png"
-    # Save the rendered graph as a PNG image file
-    G_graph.render(filename=filename, format=format)
-
-    filepath = os.path.join(os.getcwd(), filename + "." + format)
-    image = Image.open(filepath)
-
-    return image
+@st.cache_data(max_entries=4, show_spinner=False)
+def load_snapshot(data: bytes):
+    return parse_save(data)
 
 
-def gradient(start_color, end_color, width, height):
-    img = Image.new('RGB', (width, height))
-    draw = ImageDraw.Draw(img)
-    h1, s1, v1 = start_color
-    h2, s2, v2 = end_color
-    for y in range(height):
-        h = h1 + (h2 - h1) * y / (height - 1)
-        s = s1 + (s2 - s1) * y / (height - 1)
-        v = v1 + (v2 - v1) * y / (height - 1)
-        r, g, b = colorsys.hsv_to_rgb(h, s, v)
-        draw.line((0, y, width - 1, y), fill=(int(r * 255), int(g * 255), int(b * 255)))
-    return img.rotate(90, expand=True)  # 旋转图像
-
-
-# Streamlit 应用程序的主体部分
 def main():
-    #st.set_option('deprecation.showPyplotGlobalUse', False)
-    st.title('欧陆风云4贸易路线图生成器V0.1.2')
+    st.set_page_config(page_title="EU4 Trade Graph", page_icon="↗", layout="wide")
+    st.title("EU4 贸易网络图")
+    st.caption("从欧陆风云 IV 存档查看贸易节点、流向与贸易值")
+    st.info("支持范围：EU4 1.34.x · 无 Mod · 非压缩文本存档。参考样本为 1.34.4；1.34 以外的版本尚未验证，上传时会被拒绝。")
+    source = st.radio("数据来源", ("内置演示", "上传存档"), horizontal=True)
+    if source == "内置演示":
+        data = DEMO_PATH.read_bytes()
+        st.caption("演示数据来自原项目 1.34.4.0 存档，仅保留贸易字段；它不能在游戏中加载。")
+    else:
+        uploaded = st.file_uploader("上传 .eu4 非压缩文本存档（最大 200 MB）", type=["eu4"])
+        if uploaded is None:
+            st.caption("在游戏保存界面关闭压缩。压缩、二进制和铁人存档不在支持范围内。")
+            return
+        data = uploaded.getvalue()
+    try:
+        with st.spinner("读取贸易数据…"):
+            snapshot = load_snapshot(data)
+    except SaveError as error:
+        st.error(str(error))
+        return
+    columns = st.columns(3)
+    columns[0].metric("存档版本 / 日期", f"{snapshot.version} / {snapshot.date}")
+    columns[1].metric("贸易节点", len(snapshot.nodes))
+    columns[2].metric("贸易路线", len(snapshot.routes))
 
-    st.text("本应用目前还在测试中，仅对1.34版本无mod的存档进行过测试，不保证应用稳定性。")
-    st.text("若发现任何问题或有任何建议，请联系本人：weidafeng98@126.com")
+    with st.form("graph_settings"):
+        with st.expander("调整图形", expanded=False):
+            left, right = st.columns(2)
+            with left:
+                aspect = st.slider("图片宽高比（宽度 / 高度）", 0.5, 4.0, 2.16)
+                edge = st.slider("线宽范围（贸易流量）", 0.5, 12.0, (1.0, 6.0))
+                size = st.slider("节点尺寸范围（当前贸易值）", 0.3, 6.0, (0.6, 1.8))
+                font_size = st.slider("字号范围", 8.0, 48.0, (12.0, 22.0))
+            with right:
+                chinese = st.checkbox("使用中文节点名", value=True)
+                font = st.text_input("字体（需在运行环境中安装）", value=default_font())
+                st.caption("颜色表示本地贸易产出；色相沿 HSV 渐变插值。")
+                start = tuple(st.slider(f"低值颜色 · {name}", 0.0, 1.0, value, key=f"start_{name}")
+                              for name, value in zip(("H", "S", "V"), (0.0, 0.5, 1.0)))
+                end = tuple(st.slider(f"高值颜色 · {name}", 0.0, 1.0, value, key=f"end_{name}")
+                            for name, value in zip(("H", "S", "V"), (2 / 3, 0.5, 1.0)))
+        submitted = st.form_submit_button("生成贸易网络图", type="primary")
 
-    session_state = st.session_state
-
-    if "data" not in session_state:
-        session_state.data = None
-
-    # 默认设定
-    aspect_ratio = 2.16
-    line_width_min, line_width_max = 4, 20
-    node_size_min, node_size_max = 1.0, 6.0
-    font_size_min, font_size_max = 24, 72
-    h1, s1, v1 = 0.0, 0.5, 1.0
-    h2, s2, v2 = 2/3, 0.5, 1.0
-
-    uploaded_file = st.file_uploader("请上传欧陆风云4的非压缩存档文件", type='eu4')
-
-    if uploaded_file is not None:
+    settings = GraphSettings(aspect, edge, size, font_size, start, end, font, chinese)
+    # Persist only this session's latest output; each source/settings pair owns it.
+    render_key = (snapshot, settings)
+    if submitted:
         try:
-            session_state.data = uploaded_file.read().decode("MacRoman")
-        except:
-            session_state.data = uploaded_file.read().decode("cp1252")
-    if st.button("使用示例文件"):
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        sample_file_path = os.path.join(script_dir, "original.eu4")
-        with open(sample_file_path, 'rt', encoding='cp1252') as file:
-            session_state.data = file.read()
+            with st.spinner("生成网络图…"):
+                png = render_graph(snapshot, settings, "png")
+                svg = render_graph(snapshot, settings, "svg")
+            st.session_state["rendered"] = (render_key, png, svg)
+        except ExecutableNotFound:
+            st.error("未找到 Graphviz。请安装系统 Graphviz 并将 dot 加入 PATH，安装步骤见 README。")
+        except (CalledProcessError, OSError):
+            st.error("图形生成失败，请检查 Graphviz 安装和字体设置，或缩小图形尺寸。")
 
-    if session_state.data is not None:
-        with st.form(key="my_form"):
-            aspect_ratio = st.slider("图片长宽比（默认为 2.16）", 1.0, 3.0, value = 2.16)
-            line_width_min, line_width_max = st.slider("线条宽度范围（表示该线路贸易流量，默认为 4 - 20）", min_value=1, max_value=48, value=(4, 20))
-            node_size_min, node_size_max = st.slider("节点大小范围（表示从该节点提取的贸易总额，默认为 1.00 - 6.00）", min_value=1.0, max_value=12.0, value=(1.0, 6.0))
-            font_size_min, font_size_max = st.slider("字体大小范围（默认为 24 - 72）", min_value=12, max_value=144, value=(24, 72))
-            h1 = st.slider("节点颜色范围起始值（表示该节点的本地贸易产出），H（色相，默认为 0.00）", min_value=0.0, max_value=1.0, value=0.0)
-            s1 = st.slider("节点颜色范围起始值（表示该节点的本地贸易产出），S（饱和度，默认为 0.50）", min_value=0.0, max_value=1.0, value=0.5)
-            v1 = st.slider("节点颜色范围起始值（表示该节点的本地贸易产出），V（明度，默认为 1.00）", min_value=0.0, max_value=1.0, value=1.0)
-            h2 = st.slider("节点颜色范围终止值（表示该节点的本地贸易产出），H（色相，默认为 0.67）", min_value=0.0, max_value=1.0, value=2/3) 
-            s2 = st.slider("节点颜色范围终止值（表示该节点的本地贸易产出），S（饱和度，默认为 0.50）", min_value=0.0, max_value=1.0, value=0.5) 
-            v2 = st.slider("节点颜色范围终止值（表示该节点的本地贸易产出），V（明度，默认为 1.00）", min_value=0.0, max_value=1.0, value=1.0)
-            submit_button = st.form_submit_button(label="获取图片")
-            
-        if submit_button:
-            start_color = (h1, s1, v1)
-            end_color = (h2, s2, v2)
-            width = 5
-            height = 100
-            gradient_img = gradient(start_color, end_color, width, height)
+    graph_tab, nodes_tab, routes_tab = st.tabs(("贸易网络", "节点数据", "路线数据"))
+    with graph_tab:
+        rendered = st.session_state.get("rendered")
+        if rendered and rendered[0] == render_key:
+            st.image(rendered[1], caption="节点内数字为 current 当前贸易值", width="stretch")
+            first, second = st.columns(2)
+            first.download_button("下载 PNG", rendered[1], "eu4_trade.png", "image/png")
+            second.download_button("下载 SVG", rendered[2], "eu4_trade.svg", "image/svg+xml")
+        else:
+            st.caption("点击“生成贸易网络图”查看当前数据与设置的结果。")
+        st.image(gradient(settings), caption="本地贸易产出：低 → 高", width=640)
+        st.caption("节点大小与数字：current · 线宽：路线 value · 虚线：零流量 · 方框：内陆节点 · 椭圆：沿海节点")
+        st.caption("贸易值来自存档，不等同于某个国家的贸易收入；图形为节点关系图，不表示地理距离。")
+    with nodes_tab:
+        rows = node_rows(snapshot)
+        st.dataframe(sorted(rows, key=lambda row: row["current"], reverse=True), hide_index=True, width="stretch")
+        st.download_button("下载节点 CSV", to_csv(rows, ("node_id", "label_zh", "inland", "current", "local_value", "outgoing")),
+                           "eu4_trade_nodes.csv", "text/csv")
+    with routes_tab:
+        rows = route_rows(snapshot)
+        st.dataframe(sorted(rows, key=lambda row: row["value"], reverse=True), hide_index=True, width="stretch")
+        st.download_button("下载路线 CSV", to_csv(rows, ("source", "target", "value")),
+                           "eu4_trade_routes.csv", "text/csv")
 
-            image = generate_plot(session_state.data, aspect_ratio, line_width_min, line_width_max, node_size_min, node_size_max, font_size_min, font_size_max, h1, s1, v1, h2, s2, v2)
-            st.image(image, caption='贸易路线图', use_column_width=True)
-            st.image(gradient_img, caption='节点的本地贸易产出图例', use_column_width=True)
 
-            
-# 运行 Streamlit 应用程序
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-

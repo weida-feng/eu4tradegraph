@@ -1,0 +1,640 @@
+EU4txt
+# Trade-only demonstration snapshot; not playable in EU4.
+# Extracted from original.eu4 at git commit 91633ee (EU4 1.34.4.0).
+date=1444.12.1
+savegame_version={ first=1 second=34 third=4 forth=0 name="Sweden" }
+trade={
+  node={
+    definitions="african_great_lakes"
+    current=0.923
+    local_value=1.653
+    outgoing=0.730
+  }
+  node={
+    definitions="kongo"
+    current=2.434
+    local_value=2.875
+    outgoing=0.776
+    incoming={ from=1 value=0.335 }
+  }
+  node={
+    definitions="zambezi"
+    current=1.980
+    local_value=2.037
+    outgoing=0.812
+    incoming={ from=2 value=0.755 }
+  }
+  node={
+    definitions="patagonia"
+    current=0.055
+    local_value=0.083
+    outgoing=0.028
+  }
+  node={
+    definitions="amazonas_node"
+    current=0.300
+    local_value=0.300
+    outgoing=0.000
+  }
+  node={
+    definitions="rio_grande"
+    current=1.347
+    local_value=1.769
+    outgoing=0.422
+  }
+  node={
+    definitions="california"
+    current=0.811
+    local_value=1.100
+    outgoing=0.289
+  }
+  node={
+    definitions="girin"
+    current=3.510
+    local_value=4.450
+    outgoing=1.012
+    incoming={ from=7 value=0.072 }
+  }
+  node={
+    definitions="mississippi_river"
+    current=2.896
+    local_value=2.883
+    outgoing=0.059
+    incoming={ from=6 value=0.000 }
+    incoming={ from=7 value=0.072 }
+  }
+  node={
+    definitions="ohio"
+    current=4.449
+    local_value=4.936
+    outgoing=0.516
+    incoming={ from=9 value=0.029 }
+  }
+  node={
+    definitions="mexico"
+    current=9.362
+    local_value=8.911
+    outgoing=0.094
+    incoming={ from=6 value=0.473 }
+    incoming={ from=7 value=0.072 }
+  }
+  node={
+    definitions="lhasa"
+    current=0.775
+    local_value=1.395
+    outgoing=0.620
+  }
+  node={
+    definitions="chengdu"
+    current=0.444
+    local_value=2.196
+    outgoing=2.183
+    incoming={ from=12 value=0.431 }
+  }
+  node={
+    definitions="burma"
+    current=4.443
+    local_value=4.988
+    outgoing=2.014
+    incoming={ from=13 value=1.469 }
+  }
+  node={
+    definitions="gulf_of_siam"
+    current=7.071
+    local_value=8.535
+    outgoing=2.845
+    incoming={ from=14 value=1.381 }
+  }
+  node={
+    definitions="canton"
+    current=1.559
+    local_value=5.236
+    outgoing=5.398
+    incoming={ from=13 value=0.907 }
+    incoming={ from=15 value=0.814 }
+  }
+  node={
+    definitions="philippines"
+    current=4.860
+    local_value=2.930
+    outgoing=0.732
+    incoming={ from=16 value=2.662 }
+  }
+  node={
+    definitions="polynesia_node"
+    current=1.684
+    local_value=1.776
+    outgoing=0.195
+    incoming={ from=7 value=0.072 }
+    incoming={ from=11 value=0.031 }
+    incoming={ from=17 value=0.000 }
+  }
+  node={
+    definitions="australia"
+    current=1.937
+    local_value=2.083
+    outgoing=0.210
+    incoming={ from=18 value=0.064 }
+  }
+  node={
+    definitions="nippon"
+    current=8.691
+    local_value=8.010
+    outgoing=0.525
+    incoming={ from=8 value=1.142 }
+    incoming={ from=18 value=0.064 }
+  }
+  node={
+    definitions="hangzhou"
+    current=0.000
+    local_value=8.576
+    outgoing=9.101
+    incoming={ from=16 value=0.000 }
+    incoming={ from=20 value=0.525 }
+  }
+  node={
+    definitions="xian"
+    current=0.000
+    local_value=4.181
+    outgoing=4.181
+    incoming={ from=13 value=0.000 }
+    incoming={ from=21 value=0.000 }
+  }
+  node={
+    definitions="beijing"
+    current=12.090
+    local_value=4.373
+    outgoing=4.890
+    incoming={ from=8 value=0.000 }
+    incoming={ from=21 value=9.574 }
+    incoming={ from=22 value=3.033 }
+  }
+  node={
+    definitions="the_moluccas"
+    current=6.871
+    local_value=6.784
+    outgoing=0.945
+    incoming={ from=17 value=0.822 }
+    incoming={ from=19 value=0.210 }
+  }
+  node={
+    definitions="siberia"
+    current=1.115
+    local_value=1.451
+    outgoing=0.336
+    incoming={ from=8 value=0.000 }
+  }
+  node={
+    definitions="yumen"
+    current=8.074
+    local_value=2.730
+    outgoing=1.249
+    incoming={ from=22 value=1.459 }
+    incoming={ from=23 value=5.134 }
+  }
+  node={
+    definitions="malacca"
+    current=15.142
+    local_value=9.591
+    outgoing=1.280
+    incoming={ from=15 value=2.378 }
+    incoming={ from=16 value=3.402 }
+    incoming={ from=21 value=0.000 }
+    incoming={ from=24 value=1.051 }
+  }
+  node={
+    definitions="ganges_delta"
+    current=6.326
+    local_value=7.491
+    outgoing=3.573
+    incoming={ from=12 value=0.133 }
+    incoming={ from=14 value=0.866 }
+    incoming={ from=27 value=1.409 }
+  }
+  node={
+    definitions="doab"
+    current=5.876
+    local_value=6.931
+    outgoing=3.662
+    incoming={ from=28 value=2.607 }
+  }
+  node={
+    definitions="lahore"
+    current=3.745
+    local_value=5.736
+    outgoing=3.804
+    incoming={ from=12 value=0.094 }
+    incoming={ from=29 value=1.719 }
+  }
+  node={
+    definitions="deccan"
+    current=5.518
+    local_value=7.811
+    outgoing=4.643
+    incoming={ from=29 value=2.350 }
+  }
+  node={
+    definitions="comorin_cape"
+    current=10.929
+    local_value=8.281
+    outgoing=1.604
+    incoming={ from=28 value=1.375 }
+    incoming={ from=31 value=2.877 }
+  }
+  node={
+    definitions="gujarat"
+    current=8.496
+    local_value=5.495
+    outgoing=2.150
+    incoming={ from=30 value=1.038 }
+    incoming={ from=31 value=2.317 }
+    incoming={ from=32 value=1.796 }
+  }
+  node={
+    definitions="katsina"
+    current=2.171
+    local_value=3.697
+    outgoing=1.526
+  }
+  node={
+    definitions="ethiopia"
+    current=1.485
+    local_value=2.484
+    outgoing=1.057
+    incoming={ from=34 value=0.058 }
+  }
+  node={
+    definitions="gulf_of_aden"
+    current=6.043
+    local_value=5.415
+    outgoing=1.577
+    incoming={ from=35 value=0.996 }
+    incoming={ from=32 value=0.000 }
+    incoming={ from=33 value=1.209 }
+  }
+  node={
+    definitions="hormuz"
+    current=4.478
+    local_value=3.493
+    outgoing=0.759
+    incoming={ from=33 value=1.206 }
+    incoming={ from=36 value=0.538 }
+  }
+  node={
+    definitions="zanzibar"
+    current=4.985
+    local_value=3.345
+    outgoing=0.000
+    incoming={ from=1 value=0.469 }
+    incoming={ from=3 value=0.891 }
+    incoming={ from=33 value=0.000 }
+    incoming={ from=36 value=0.280 }
+  }
+  node={
+    definitions="cape_of_good_hope"
+    current=0.000
+    local_value=0.000
+    outgoing=0.000
+    incoming={ from=27 value=0.000 }
+    incoming={ from=32 value=0.000 }
+    incoming={ from=38 value=0.000 }
+  }
+  node={
+    definitions="basra"
+    current=1.579
+    local_value=3.188
+    outgoing=2.458
+    incoming={ from=37 value=0.849 }
+  }
+  node={
+    definitions="samarkand"
+    current=4.132
+    local_value=4.446
+    outgoing=3.259
+    incoming={ from=25 value=0.168 }
+    incoming={ from=26 value=1.249 }
+    incoming={ from=30 value=1.528 }
+  }
+  node={
+    definitions="persia"
+    current=10.051
+    local_value=6.177
+    outgoing=2.591
+    incoming={ from=30 value=1.494 }
+    incoming={ from=41 value=2.236 }
+    incoming={ from=40 value=2.735 }
+  }
+  node={
+    definitions="aleppo"
+    current=2.587
+    local_value=4.341
+    outgoing=2.756
+    incoming={ from=40 value=0.000 }
+    incoming={ from=42 value=1.002 }
+  }
+  node={
+    definitions="alexandria"
+    current=5.984
+    local_value=6.769
+    outgoing=4.089
+    incoming={ from=35 value=0.181 }
+    incoming={ from=36 value=0.917 }
+    incoming={ from=43 value=2.206 }
+  }
+  node={
+    definitions="astrakhan"
+    current=3.272
+    local_value=2.925
+    outgoing=2.655
+    incoming={ from=41 value=1.183 }
+    incoming={ from=42 value=1.819 }
+  }
+  node={
+    definitions="crimea"
+    current=3.563
+    local_value=4.414
+    outgoing=2.798
+    incoming={ from=45 value=1.947 }
+  }
+  node={
+    definitions="constantinople"
+    current=7.586
+    local_value=5.936
+    outgoing=1.245
+    incoming={ from=43 value=0.803 }
+    incoming={ from=44 value=2.049 }
+    incoming={ from=46 value=0.043 }
+  }
+  node={
+    definitions="kiev"
+    current=2.521
+    local_value=4.328
+    outgoing=4.309
+    incoming={ from=46 value=2.502 }
+  }
+  node={
+    definitions="kazan"
+    current=2.350
+    local_value=2.785
+    outgoing=1.566
+    incoming={ from=25 value=0.168 }
+    incoming={ from=45 value=0.963 }
+  }
+  node={
+    definitions="novgorod"
+    current=8.763
+    local_value=5.852
+    outgoing=1.794
+    incoming={ from=49 value=1.644 }
+    incoming={ from=48 value=3.061 }
+  }
+  node={
+    definitions="cuiaba"
+    current=0.927
+    local_value=1.183
+    outgoing=0.256
+  }
+  node={
+    definitions="laplata"
+    current=0.306
+    local_value=0.150
+    outgoing=0.000
+    incoming={ from=4 value=0.028 }
+    incoming={ from=51 value=0.128 }
+  }
+  node={
+    definitions="lima"
+    current=2.309
+    local_value=2.225
+    outgoing=0.044
+    incoming={ from=51 value=0.128 }
+  }
+  node={
+    definitions="brazil"
+    current=0.632
+    local_value=0.800
+    outgoing=0.168
+    incoming={ from=5 value=0.000 }
+    incoming={ from=52 value=0.000 }
+  }
+  node={
+    definitions="timbuktu"
+    current=5.592
+    local_value=4.621
+    outgoing=0.662
+    incoming={ from=34 value=1.633 }
+  }
+  node={
+    definitions="ivory_coast"
+    current=1.394
+    local_value=1.856
+    outgoing=1.426
+    incoming={ from=2 value=0.099 }
+    incoming={ from=55 value=0.697 }
+    incoming={ from=54 value=0.168 }
+    incoming={ from=39 value=0.000 }
+  }
+  node={
+    definitions="tunis"
+    current=1.146
+    local_value=2.391
+    outgoing=1.245
+    incoming={ from=34 value=0.000 }
+  }
+  node={
+    definitions="ragusa"
+    current=2.478
+    local_value=5.040
+    outgoing=3.958
+    incoming={ from=47 value=1.396 }
+  }
+  node={
+    definitions="safi"
+    current=2.693
+    local_value=3.426
+    outgoing=0.733
+    incoming={ from=55 value=0.000 }
+  }
+  node={
+    definitions="pest"
+    current=2.247
+    local_value=3.311
+    outgoing=3.483
+    incoming={ from=46 value=0.480 }
+    incoming={ from=58 value=1.939 }
+  }
+  node={
+    definitions="krakow"
+    current=2.955
+    local_value=4.812
+    outgoing=5.052
+    incoming={ from=48 value=1.710 }
+    incoming={ from=60 value=1.485 }
+  }
+  node={
+    definitions="wien"
+    current=5.288
+    local_value=6.078
+    outgoing=4.727
+    incoming={ from=60 value=2.373 }
+    incoming={ from=61 value=1.564 }
+  }
+  node={
+    definitions="saxony"
+    current=4.662
+    local_value=5.294
+    outgoing=4.623
+    incoming={ from=61 value=1.956 }
+    incoming={ from=62 value=2.035 }
+  }
+  node={
+    definitions="baltic_sea"
+    current=7.227
+    local_value=5.397
+    outgoing=2.195
+    incoming={ from=50 value=1.921 }
+    incoming={ from=61 value=2.104 }
+  }
+  node={
+    definitions="rheinland"
+    current=8.229
+    local_value=7.554
+    outgoing=3.944
+    incoming={ from=62 value=1.430 }
+    incoming={ from=63 value=3.189 }
+  }
+  node={
+    definitions="panama"
+    current=1.272
+    local_value=1.133
+    outgoing=0.000
+    incoming={ from=11 value=0.031 }
+    incoming={ from=53 value=0.044 }
+    incoming={ from=18 value=0.064 }
+  }
+  node={
+    definitions="carribean_trade"
+    current=0.057
+    local_value=0.100
+    outgoing=0.459
+    incoming={ from=5 value=0.000 }
+    incoming={ from=9 value=0.029 }
+    incoming={ from=11 value=0.031 }
+    incoming={ from=66 value=0.000 }
+    incoming={ from=56 value=0.356 }
+  }
+  node={
+    definitions="chesapeake_bay"
+    current=3.798
+    local_value=4.653
+    outgoing=1.581
+    incoming={ from=10 value=0.574 }
+    incoming={ from=67 value=0.152 }
+  }
+  node={
+    definitions="james_bay"
+    current=1.063
+    local_value=1.116
+    outgoing=0.053
+  }
+  node={
+    definitions="st_lawrence"
+    current=3.405
+    local_value=2.908
+    outgoing=1.298
+    incoming={ from=69 value=0.053 }
+    incoming={ from=10 value=0.000 }
+    incoming={ from=68 value=1.742 }
+  }
+  node={
+    definitions="white_sea"
+    current=1.054
+    local_value=1.539
+    outgoing=0.564
+    incoming={ from=50 value=0.079 }
+  }
+  node={
+    definitions="north_sea"
+    current=3.212
+    local_value=4.363
+    outgoing=2.364
+    incoming={ from=70 value=0.649 }
+    incoming={ from=71 value=0.564 }
+  }
+  node={
+    definitions="lubeck"
+    current=11.173
+    local_value=6.139
+    outgoing=1.324
+    incoming={ from=72 value=2.062 }
+    incoming={ from=64 value=2.195 }
+    incoming={ from=63 value=1.969 }
+    incoming={ from=65 value=0.132 }
+  }
+  node={
+    definitions="bordeaux"
+    current=2.827
+    local_value=4.363
+    outgoing=2.693
+    incoming={ from=56 value=0.356 }
+    incoming={ from=67 value=0.152 }
+    incoming={ from=70 value=0.649 }
+  }
+  node={
+    definitions="sevilla"
+    current=9.021
+    local_value=6.898
+    outgoing=0.434
+    incoming={ from=57 value=1.316 }
+    incoming={ from=59 value=0.733 }
+    incoming={ from=56 value=0.356 }
+    incoming={ from=67 value=0.152 }
+  }
+  node={
+    definitions="champagne"
+    current=10.459
+    local_value=7.545
+    outgoing=4.026
+    incoming={ from=74 value=2.693 }
+    incoming={ from=65 value=4.247 }
+  }
+  node={
+    definitions="valencia"
+    current=2.586
+    local_value=3.318
+    outgoing=1.166
+    incoming={ from=57 value=0.000 }
+    incoming={ from=75 value=0.434 }
+  }
+  node={
+    definitions="genua"
+    current=13.304
+    local_value=9.177
+    outgoing=0.000
+    incoming={ from=57 value=0.045 }
+    incoming={ from=44 value=2.271 }
+    incoming={ from=77 value=1.166 }
+    incoming={ from=58 value=0.645 }
+    incoming={ from=76 value=0.000 }
+  }
+  node={
+    definitions="venice"
+    current=10.158
+    local_value=6.339
+    outgoing=0.000
+    incoming={ from=44 value=0.255 }
+    incoming={ from=58 value=1.778 }
+    incoming={ from=62 value=1.786 }
+  }
+  node={
+    definitions="english_channel"
+    current=16.577
+    local_value=9.738
+    outgoing=0.000
+    incoming={ from=56 value=0.356 }
+    incoming={ from=68 value=0.000 }
+    incoming={ from=72 value=0.600 }
+    incoming={ from=73 value=1.395 }
+    incoming={ from=76 value=4.488 }
+  }
+}
