@@ -1,4 +1,4 @@
-"""EU4 1.34 trade snapshot parsing and visualization."""
+"""EU4 trade snapshot parsing and visualization."""
 
 from .parser import SaveError, TradeNode, TradeRoute, TradeSnapshot, parse_save
 

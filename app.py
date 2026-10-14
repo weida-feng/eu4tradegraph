@@ -7,6 +7,7 @@ import streamlit as st
 
 from eu4tradegraph import SaveError, parse_save
 from eu4tradegraph.export import node_rows, route_rows, to_csv
+from eu4tradegraph.parser import VERIFIED_VERSION
 from eu4tradegraph.render import GraphSettings, default_font, gradient, render_graph
 
 DEMO_PATH = Path(__file__).parent / "examples" / "trade_snapshot_1.34.4.eu4"
@@ -21,7 +22,7 @@ def main():
     st.set_page_config(page_title="EU4 Trade Graph", page_icon="↗", layout="wide")
     st.title("EU4 贸易网络图")
     st.caption("从欧陆风云 IV 存档查看贸易节点、流向与贸易值")
-    st.info("支持范围：EU4 1.34.x · 无 Mod · 非压缩文本存档。参考样本为 1.34.4；1.34 以外的版本尚未验证，上传时会被拒绝。")
+    st.info("目前仅验证过 EU4 1.34.4 的无 Mod、非压缩文本存档。其他版本可以尝试，但不保证兼容性或结果正确。")
     source = st.radio("数据来源", ("内置演示", "上传存档"), horizontal=True)
     if source == "内置演示":
         data = DEMO_PATH.read_bytes()
@@ -38,6 +39,8 @@ def main():
     except SaveError as error:
         st.error(str(error))
         return
+    if snapshot.version != VERIFIED_VERSION:
+        st.warning(f"当前存档版本为 {snapshot.version}。目前仅验证过 EU4 1.34.4；可继续生成图形和导出数据，但不保证结果正确。")
     columns = st.columns(3)
     columns[0].metric("存档版本 / 日期", f"{snapshot.version} / {snapshot.date}")
     columns[1].metric("贸易节点", len(snapshot.nodes))

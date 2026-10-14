@@ -42,10 +42,16 @@ class ParserTests(unittest.TestCase):
         self.assertEqual((snapshot.nodes[0].current, snapshot.nodes[0].outgoing), (0, 0))
         self.assertEqual(snapshot.routes, ())
 
-    def test_version_boundary(self):
+    def test_other_versions_are_not_blocked(self):
         for second in (33, 35, 37):
-            with self.subTest(second=second), self.assertRaisesRegex(SaveError, "仅支持 EU4 1.34"):
-                parse_save(save('node={ definitions="kongo" }', version=VERSION.replace("second=34", f"second={second}")))
+            with self.subTest(second=second):
+                snapshot = parse_save(save('node={ definitions="kongo" }', version=VERSION.replace("second=34", f"second={second}")))
+                self.assertEqual(snapshot.version, f"1.{second}.4.0")
+                self.assertEqual(snapshot.nodes[0].name, "kongo")
+        snapshot = parse_save(save('node={ definitions="kongo" }', version=VERSION.replace("third=4", "third=3")))
+        self.assertEqual(snapshot.version, "1.34.3.0")
+
+    def test_malformed_version_metadata(self):
         for version in ("", "savegame_version={ first=1 }", "savegame_version=1.34", VERSION + VERSION):
             with self.subTest(version=version), self.assertRaises(SaveError):
                 parse_save(save('node={ definitions="kongo" }', version=version))

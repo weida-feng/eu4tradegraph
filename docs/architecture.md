@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-    A[EU4txt save / demo extract] --> B[Format and version checks]
+    A[EU4txt save / demo extract] --> B[Format checks and version metadata]
     B --> C[Scoped trade-field extraction]
     C --> D[Typed nodes and route references]
     D --> E[Graphviz DOT]
@@ -19,7 +19,7 @@ Only top-level version/mod/trade fields are used. Inside a trade node, numeric f
 
 EU4's `incoming.from` refers to a one-based position in the saved node list. The app preserves that order, converts references to zero-based indices, and validates them after the full list is available. A reference may point to a node later in the file. Unknown IDs, duplicate nodes, invalid indices and negative/non-finite numeric values raise an input error.
 
-The gate accepts version family 1.34.x. The reference save is 1.34.4.0. Declared mods and unknown node IDs are rejected; absent mod metadata is not proof of an unmodified save. The node catalog is intentionally the original project's catalog rather than an inferred newer game's topology.
+There is no version allowlist. The reference save is 1.34.4.0; other versions may be attempted, but compatibility and results are not guaranteed. The interface warns when the parsed version differs from that reference and still permits rendering and exports. Version metadata must remain well-formed. Declared mods and unknown node IDs are rejected; absent mod metadata is not proof of an unmodified save. The node catalog is intentionally the original project's catalog rather than an inferred newer game's topology.
 
 ## Visual mapping
 
@@ -37,6 +37,6 @@ The UTF-8 node catalog is converted from the original GB2312 `trade_center.txt`.
 
 ## Validation limits
 
-The test suite covers parsing and indexing failures, unsupported inputs, degenerate numeric ranges, real Graphviz output, CSV content, and the Streamlit demo/source-switch flow. CI runs with Graphviz on Python 3.11 and 3.13. A single campaign extract is not evidence of support across EU4 releases, every 1.34 patch, total-conversion mods or every operating system.
+The test suite covers parsing and indexing failures, unsupported input formats, degenerate numeric ranges, real Graphviz output, CSV content, and the Streamlit demo/source-switch flow. Synthetic version metadata checks that other versions are not blocked and that warnings still allow rendering; it does not verify real saves from those versions. CI runs with Graphviz on Python 3.11 and 3.13. A single campaign extract is not evidence of support across EU4 releases, every 1.34 patch, total-conversion mods or every operating system.
 
 There is no trade-income forecast, optimal-route calculation, geographic map or public deployment in the current scope.

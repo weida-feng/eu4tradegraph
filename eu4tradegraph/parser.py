@@ -8,6 +8,7 @@ import re
 from typing import Iterator
 
 MAX_SAVE_BYTES = 200 * 1024 * 1024
+VERIFIED_VERSION = "1.34.4.0"
 DATA_PATH = Path(__file__).parent / "data" / "trade_centers.tsv"
 _TOKEN = re.compile(r'\s*(#[^\r\n]*|"(?:\\.|[^"\\])*"|[{}=]|[^\s{}=#"]+)')
 _STRUCTURE = re.compile(r'"(?:\\.|[^"\\])*"|#[^\r\n]*|[{}]')
@@ -133,10 +134,10 @@ def node_catalog() -> dict[str, tuple[str, bool]]:
 
 
 def parse_save(data: bytes) -> TradeSnapshot:
-    """Accept uncompressed vanilla EU4txt 1.34.x saves.
+    """Read uncompressed vanilla EU4txt saves without a version allowlist.
 
-    The gate expresses supported scope, not verification of every 1.34 patch.
-    The repository reference snapshot is version 1.34.4.0.
+    Only the 1.34.4.0 reference snapshot has been verified. Other versions
+    may be attempted, but their compatibility and results are not guaranteed.
     """
     if len(data) > MAX_SAVE_BYTES:
         raise SaveError("存档超过 200 MB，请使用较小的非压缩存档。")
@@ -162,7 +163,7 @@ def parse_save(data: bytes) -> TradeSnapshot:
         elif field.name in ("mods_enabled", "mod_enabled"):
             value, _ = _token(field.value, 0)
             if (field.block and value) or (not field.block and value not in ("", '""', "no", "none", "0")):
-                raise SaveError("当前仅支持无 Mod 存档，请使用原版 EU4 1.34.x 存档。")
+                raise SaveError("当前仅支持无 Mod 存档，请使用原版 EU4 存档。")
         elif field.name == "ironman" and field.value != "no":
             raise SaveError("不支持铁人存档，请使用非压缩的普通文本存档。")
         elif field.name == "trade":
@@ -172,7 +173,7 @@ def parse_save(data: bytes) -> TradeSnapshot:
 
     versions = [field for field in metadata if field.name == "savegame_version"]
     if len(versions) != 1 or not versions[0].block:
-        raise SaveError("无法确定存档版本；当前仅支持 EU4 1.34.x。")
+        raise SaveError("存档的版本信息缺失、重复或格式不正确。")
     version_fields = list(_fields(versions[0].value))
     parts = [_single(version_fields, key, "0" if key in ("third", "forth") else None)
              for key in ("first", "second", "third", "forth")]
@@ -180,8 +181,6 @@ def parse_save(data: bytes) -> TradeSnapshot:
         raise SaveError("存档版本字段格式不正确。")
     parts = [str(int(part)) for part in parts]
     version = ".".join(parts)
-    if parts[:2] != ["1", "34"]:
-        raise SaveError(f"存档版本为 {version}；当前仅支持 EU4 1.34.x，其他版本尚未验证。")
     if trade is None:
         raise SaveError("存档中没有找到 trade 贸易数据区块。")
 
@@ -197,7 +196,7 @@ def parse_save(data: bytes) -> TradeSnapshot:
         fields = list(_fields(block.value))
         name = _single(fields, "definitions")
         if name not in catalog:
-            raise SaveError(f"未知贸易节点 {name}；请检查是否为无 Mod 的 EU4 1.34.x 存档。")
+            raise SaveError(f"无法识别贸易节点 {name}；当前节点名称与分类映射基于 1.34.4 参考数据。")
         if name in names:
             raise SaveError(f"存档包含重复贸易节点 {name}。")
         names.add(name)

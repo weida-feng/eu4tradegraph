@@ -14,13 +14,13 @@ EU4 stores trade nodes and transfers as nested text. This project extracts those
 
 | Input | Support |
 | --- | --- |
-| Vanilla EU4 **1.34.x**, uncompressed `EU4txt` save | Accepted |
+| Vanilla EU4, uncompressed `EU4txt` save | Can be parsed when its trade fields and node IDs are recognized |
 | Reference data actually checked | **1.34.4.0**, in-game date 1444.12.1 |
-| Other EU4 versions, including 1.35+ | Rejected; compatibility has not been verified |
+| Other EU4 versions, including other 1.34 patches and 1.35+ | Can be attempted; compatibility and results are not guaranteed |
 | Saves declaring enabled mods, or containing unknown trade nodes | Rejected |
 | Compressed, binary or Ironman saves | Not supported |
 
-The 1.34.x gate defines the supported scope; it does **not** mean every 1.34 patch has been tested. Mod detection uses save metadata and the original node catalog; it cannot prove that a save without mod metadata was never modified. DLC entries are separate from mods and are allowed.
+Only **EU4 1.34.4.0** has been verified against the reference save. There is no version allowlist: saves from other versions can be attempted, and the app displays a warning before letting users generate graphs and export data. This does not establish compatibility with those versions; parsing may fail or the results may be incorrect if the save format or trade data has changed. Mod detection uses save metadata and the original node catalog; it cannot prove that a save without mod metadata was never modified. DLC entries are separate from mods and are allowed.
 
 The included example is a **trade-only extract**, not a playable game save. It preserves all 80 nodes, 153 route records, their order and numeric trade fields from the original repository save. Its size is 13,808 bytes, compared with the original 51,124,155-byte file. The original remains in Git history at `91633ee`; no history rewrite is required.
 
@@ -77,7 +77,7 @@ Features include Chinese or English node labels, adjustable sizing and color ran
 
 ```text
 app.py                         Streamlit input, controls and downloads
-eu4tradegraph/parser.py         Format/version checks and scoped trade extraction
+eu4tradegraph/parser.py         Format checks, version metadata and trade extraction
 eu4tradegraph/render.py         Numeric scaling, DOT generation and in-memory rendering
 eu4tradegraph/export.py         Node/route tables and CSV serialization
 eu4tradegraph/data/             UTF-8 node names and inland/coastal flags
@@ -93,7 +93,7 @@ The parser reads braces, quoted strings and comments instead of relying on fixed
 python -m unittest discover -s tests -v
 ```
 
-The suite checks reference counts and values, out-of-scope versions, mods, bad input, omitted zero fields, nested-field isolation, invalid route indices, all-zero rendering, PNG/SVG output, CSV exports and the Streamlit demo flow. Graphviz integration tests require `dot`; the GitHub Actions workflow installs it and runs the suite on Python 3.11 and 3.13.
+The suite checks reference counts and values, acceptance of other version metadata, version warnings that still allow rendering, mods, bad input, omitted zero fields, nested-field isolation, invalid route indices, all-zero rendering, PNG/SVG output, CSV exports and the Streamlit demo flow. Other-version tests use synthetic metadata, not verified saves from those game versions. Graphviz integration tests require `dot`; the GitHub Actions workflow installs it and runs the suite on Python 3.11 and 3.13.
 
 The refactor was also checked against the original full 1.34.4.0 save: the extracted demo and the full save produce equal parsed snapshots. This is one reference campaign, not a cross-version compatibility study.
 
